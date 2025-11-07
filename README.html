@@ -2,408 +2,257 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>邓悠然，我喜欢你</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>我们的一周年</title>
+  <meta name="description" content="一周年纪念：精美UI、烟花心形、时间轴、相册灯箱、倒计时与轻音乐" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0b0f1a;
-      --accent: #ff6bb3;
-      --text: #ffffff;
-      --soft: #ffd1e6;
+    :root{
+      --bg:#0e1320;
+      --bg-soft:#121831;
+      --card:#151a2b;
+      --text:#eef2ff;
+      --text-soft:#c7d2fe;
+      --accent:#ff6bb3;
+      --accent-2:#7bdcff;
+      --gold:#ffd56b;
     }
-    * { box-sizing: border-box; }
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: radial-gradient(1200px circle at 70% 20%, #12172a 0%, #0b0f1a 40%, #060812 100%);
-      color: var(--text);
-      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      overflow: hidden;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:radial-gradient(1200px circle at 70% 10%,#12172a 0%,#0e1320 40%,#080b16 100%);color:var(--text);font-family:Inter,"Noto Serif SC","PingFang SC","Microsoft YaHei",system-ui}
+    a{color:var(--accent)}
+    /* 顶部英雄封面 */
+    header.hero{
+      position:relative;min-height:72vh;display:grid;place-items:center;text-align:center;overflow:hidden
     }
-    /* 背景烟花画布 */
-    canvas#fireworks {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      display: block;
-      z-index: 0;
-      background: transparent;
+    .hero::before{
+      content:"";position:absolute;inset:0;background:
+        radial-gradient(1200px circle at 80% 20%,rgba(255,105,180,.12),transparent 40%),
+        radial-gradient(1400px circle at 10% 90%,rgba(123,220,255,.10),transparent 45%);
+      z-index:0
     }
-    /* 中央告白卡片 */
-    .center {
-      position: relative;
-      z-index: 2;
-      min-height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      text-align: center;
+    .hero-inner{position:relative;z-index:2;padding:24px;max-width:980px;width:100%}
+    .title{
+      font-family:"Noto Serif SC",serif;font-size:clamp(28px,6vw,52px);letter-spacing:.6px;margin:8px 0 10px
     }
-    .card {
-      width: min(720px, 92vw);
-      backdrop-filter: blur(10px) saturate(120%);
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 24px;
-      padding: 32px 28px;
-      box-shadow: 0 40px 120px rgba(255, 105, 180, 0.18), 0 12px 24px rgba(0,0,0,0.4);
-      animation: floatUp 1.8s ease both;
+    .subtitle{
+      font-size:clamp(16px,3.2vw,20px);color:var(--text-soft);margin:0 0 18px
     }
-    @keyframes floatUp {
-      from { transform: translateY(18px); opacity: 0; }
-      to   { transform: translateY(0);   opacity: 1; }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+      background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);font-weight:600;color:#ffe8f2
     }
-    .heart {
-      width: 120px; height: 120px; margin: 0 auto 12px;
-      position: relative;
-      filter: drop-shadow(0 6px 18px rgba(255, 105, 180, 0.4));
+    .cta{
+      display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px
     }
-    .heart::before, .heart::after {
-      content: "";
-      position: absolute;
-      width: 60px; height: 96px;
-      background: linear-gradient(180deg, #ff7ab5 0%, #ff3e9e 50%, #ff0066 100%);
-      border-radius: 60px 60px 0 0;
-      transform: rotate(-45deg);
-      transform-origin: 0 100%;
-      left: 30px; top: 12px;
-      animation: pulse 2s ease-in-out infinite;
+    .btn{
+      border:none;outline:none;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600;letter-spacing:.2px
     }
-    .heart::after {
-      transform: rotate(45deg);
-      transform-origin: 100% 100%;
-      left: auto; right: 30px;
+    .btn-primary{
+      background:linear-gradient(90deg,var(--accent),#ff3e9e);color:white;box-shadow:0 16px 40px rgba(255,105,180,.3);transition:transform .15s ease
     }
-    @keyframes pulse {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.25); }
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-ghost{
+      background:rgba(255,255,255,.10);color:#eaf2ff;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px)
     }
-
-    h1 {
-      margin: 10px 0 6px;
-      font-size: clamp(26px, 4.4vw, 42px);
-      letter-spacing: 1px;
+    /* 卡片与版式 */
+    .section{padding:42px 18px}
+    .container{width:min(1080px,92vw);margin:0 auto}
+    .card{
+      background:rgba(21,26,43,.8);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;
+      box-shadow:0 24px 80px rgba(0,0,0,.45),0 16px 40px rgba(255,105,180,.12)
     }
-    h2 {
-      margin: 4px 0 18px;
-      font-weight: 500;
-      font-size: clamp(18px, 2.8vw, 22px);
-      color: var(--soft);
+    .card h3{margin:0 0 12px;font-size:clamp(20px,3.6vw,26px)}
+    .card p{line-height:1.9;color:#e9efff}
+    /* 打字机与小作文 */
+    .typewriter{min-height:80px;white-space:pre-wrap}
+    .signature{margin-top:10px;color:#bcd0ff;font-size:14px}
+    /* 时间轴 */
+    .timeline{display:grid;gap:14px;margin-top:8px}
+    .t-item{
+      display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start;padding:14px;border-radius:14px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)
     }
-    .message {
-      font-size: clamp(16px, 2.6vw, 20px);
-      line-height: 1.8;
-      color: #e9efff;
-      margin: 10px 0 18px;
+    .t-date{font-weight:600;color:var(--gold)}
+    .t-text{color:#eaf2ff}
+    /* 相册网格 */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .grid img{
+      width:100%;height:200px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.14);cursor:pointer;
+      transition:transform .18s ease, box-shadow .18s ease
     }
-    .signature {
-      margin-top: 10px;
-      font-size: 16px;
-      color: #bcd0ff;
+    .grid img:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(123,220,255,.25)}
+    /* 灯箱 */
+    .lightbox{position:fixed;inset:0;background:rgba(8,11,22,.8);display:none;align-items:center;justify-content:center;z-index:100}
+    .lightbox img{max-width:92vw;max-height:86vh;border-radius:16px;border:1px solid rgba(255,255,255,.2)}
+    /* 漂浮心形 */
+    .hearts{position:fixed;inset:0;pointer-events:none;z-index:1}
+    .heart{
+      position:absolute;width:18px;height:18px;transform:translate(-50%,-50%);opacity:.9;filter:drop-shadow(0 6px 16px rgba(255,105,180,.4))
     }
-    .btns {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 16px;
+    .heart::before,.heart::after{
+      content:"";position:absolute;width:9px;height:14px;background:linear-gradient(180deg,#ff7ab5 0%,#ff3e9e 50%,#ff0066 100%);
+      border-radius:9px 9px 0 0;transform:rotate(-45deg);transform-origin:0 100%;left:4px;top:2px
     }
-    .btn {
-      border: none;
-      outline: none;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      cursor: pointer;
-      transition: transform .15s ease, box-shadow .2s ease, background .3s ease;
+    .heart::after{transform:rotate(45deg);transform-origin:100% 100%;left:auto;right:4px}
+    /* 倒计时卡 */
+    .countdown{display:flex;gap:14px;flex-wrap:wrap}
+    .count-item{
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;min-width:120px;text-align:center
     }
-    .btn-primary {
-      background: linear-gradient(90deg, #ff7ab5, #ff3e9e);
-      color: white;
-      box-shadow: 0 10px 24px rgba(255, 105, 180, .35);
+    .count-item .num{font-size:26px;font-weight:700;color:#fff}
+    .count-item .label{font-size:12px;color:#c7d6ff}
+    /* 底部 */
+    footer{padding:22px 18px;text-align:center;color:#89a4ff;font-size:12px}
+    /* 响应式 */
+    @media (max-width:768px){
+      .grid{grid-template-columns:1fr 1fr}
+      .t-item{grid-template-columns:100px 1fr}
     }
-    .btn-primary:hover { transform: translateY(-2px); }
-    .btn-ghost {
-      background: rgba(255,255,255,.12);
-      color: #ffe8f2;
-      border: 1px solid rgba(255,255,255,.22);
-      backdrop-filter: blur(6px);
-    }
-    .note {
-      margin-top: 14px;
-      font-size: 13px;
-      opacity: .8;
-      color: #c7d6ff;
-    }
-    footer {
-      position: fixed;
-      bottom: 10px; left: 0; right: 0;
-      text-align: center;
-      font-size: 12px;
-      color: #89a4ff;
-      z-index: 1;
-      opacity: .8;
-    }
-    a.inline {
-      color: var(--soft);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    /* 手机优化 */
-    @media (max-width: 420px) {
-      .card { padding: 26px 22px; border-radius: 18px; }
-      .heart { transform: scale(.9); }
+    @media (max-width:460px){
+      .grid{grid-template-columns:1fr}
+      .t-item{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
-  <canvas id="fireworks"></canvas>
-
-  <div class="center">
-    <div class="card">
-      <div class="heart" aria-hidden="true"></div>
-      <h1>邓悠然，我喜欢你</h1>
-      <h2>今夜的烟花，都是我为你点亮的星河</h2>
-
-      <p class="message" id="message">
-        认识你之后，许多平凡的瞬间都变得闪闪发光。
-        我想把最浪漫的光，写进你的名字里：
-        邓悠然——愿你的笑，永远被温柔照亮。
-      </p>
-
-      <div class="btns">
-        <button class="btn btn-primary" id="launch">为你放烟花</button>
-        <button class="btn btn-ghost" id="heartShow">心动瞬间</button>
-        <button class="btn btn-ghost" id="musicToggle">轻音乐</button>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="pill">我们的一周年 · One Year Anniversary</div>
+      <h1 class="title">和你一起，温柔的一整年</h1>
+      <p class="subtitle">把喜欢写进每一个普通的日子里，等它们在回望时都闪闪发光。</p>
+      <div class="cta">
+        <button class="btn btn-primary" id="playFireworks">点亮此刻</button>
+        <button class="btn btn-ghost" id="toggleMusic">轻音乐</button>
+        <button class="btn btn-ghost" id="scrollEssay">看看小作文</button>
       </div>
-      <p class="note">如果你愿意，我就把以后的每一个夜晚都点亮给你。</p>
-      <p class="signature">—— 来自偷偷喜欢你的那个人</p>
     </div>
-  </div>
+    <canvas id="fw"></canvas>
+  </header>
 
-  <!-- 可选：内置一段轻音乐（无外链，合成音调）。如不需要可移除 -->
+  <main>
+    <section class="section">
+      <div class="container card">
+        <h3>一周年小作文</h3>
+        <div class="typewriter" id="essay"></div>
+        <p class="signature">—— 写给那位让我把生活过成诗的人</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container card">
+        <h3>我们的时间轴</h3>
+        <div class="timeline">
+          <div class="t-item">
+            <div class="t-date">2024-11-08</div>
+            <div class="t-text">第一次把“喜欢”说出口。后来每一次目光相遇，都像按下了心动的重播键。</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">2025-01-14</div>
+            <div class="t-text">去看了冬日的落日。风很冷，你的手很暖，连影子也被染成了金色。</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">2025-04-02</div>
+            <div class="t-text">雨后走在花下，路灯像星，花像雨。那晚我决定，把全部温柔都给你。</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">2025-08-08</div>
+            <div class="t-text">我们为一个小小的愿望庆祝。愿望实现的时候，我偷偷许了另一个：永远。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container card">
+        <h3>一周年倒计时</h3>
+        <p style="color:#cfe0ff;margin:6px 0 12px">设置我们的纪念日后，倒计时会自动刷新。</p>
+        <div class="countdown" id="countdown"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container card">
+        <h3>小相册</h3>
+        <p style="color:#cfe0ff;margin:6px 0 12px">点击图片可全屏预览，支持手机手势缩放。</p>
+        <div class="grid" id="gallery">
+          <!-- 将以下 src 替换为你的图片地址或相对路径 -->
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="星空" />
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="夜色" />
+          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop" alt="霓虹" />
+          <img src="https://images.unsplash.com/photo-1513558161293-c97ee98c78ee?q=80&w=1200&auto=format&fit=crop" alt="海边" />
+          <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1200&auto=format&fit=crop" alt="花园" />
+          <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?q=80&w=1200&auto=format&fit=crop" alt="城市" />
+        </div>
+      </div>
+    </section>
+
+    <div class="lightbox" id="lightbox"><img id="lightImg" src="" alt="preview" /></div>
+
+  </main>
+
+  <footer>如果你愿意，我们就把第二年也过得闪闪发光。</footer>
+
   <audio id="bgm" preload="auto"></audio>
 
-  <footer>按空格或点击“为你放烟花”触发。支持手机与电脑。</footer>
+  <div class="hearts" id="hearts"></div>
 
   <script>
-    // =============== 简易烟花引擎（纯原生 JS） ===============
-    const canvas = document.getElementById('fireworks');
-    const ctx = canvas.getContext('2d', { alpha: true });
-    let W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
-    function resize() {
-      W = canvas.width = Math.floor(window.innerWidth * DPR);
-      H = canvas.height = Math.floor(window.innerHeight * DPR);
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-    }
-    window.addEventListener('resize', resize, { passive: true });
-    resize();
-
-    const rand = (min, max) => Math.random() * (max - min) + min;
-    const TAU = Math.PI * 2;
-
-    const colors = [
-      ['#ff7ab5', '#ffd1e6', '#fff0f7'],
-      ['#7bdcff', '#b5f1ff', '#e6fbff'],
-      ['#ffd56b', '#ffe7a6', '#fff7da'],
-      ['#a8ffb1', '#d7ffd6', '#eaffea'],
-    ];
-
-    class Particle {
-      constructor(x, y, angle, speed, color, fade=0.012) {
-        this.x = x; this.y = y;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.life = 1;
-        this.color = color;
-        this.fade = fade;
-        this.size = rand(1.2, 2.6);
-        this.gravity = rand(0.015, 0.03);
-        this.air = rand(0.985, 0.994);
-        this.spark = Math.random() < 0.22;
-      }
-      step() {
-        this.vx *= this.air;
-        this.vy = this.vy * this.air + this.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life -= this.fade;
-        return this.life > 0;
-      }
-      draw(ctx) {
-        ctx.globalAlpha = Math.max(this.life, 0) * (this.spark ? 1 : 0.85);
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, TAU);
-        ctx.fill();
-      }
-    }
-
-    class Firework {
-      constructor(x, y, burst=140, palette=colors[Math.random()*colors.length|0]) {
-        this.particles = [];
-        this.trail = [];
-        const baseSpeed = rand(4.6, 7.0) * DPR;
-        for (let i = 0; i < burst; i++) {
-          const angle = i / burst * TAU + rand(-0.02, 0.02);
-          const speed = baseSpeed * (0.55 + Math.random()*0.75);
-          const color = palette[(Math.random()*palette.length)|0];
-          this.particles.push(new Particle(x, y, angle, speed, color));
-        }
-        // 额外：心形分布
-        if (Math.random() < 0.35) {
-          const heartPalette = ['#ff6bb3','#ff3e9e','#ff0066'];
-          const n = 180;
-          for (let t = 0; t < n; t++) {
-            const theta = t / n * TAU;
-            const hx = 16 * Math.pow(Math.sin(theta), 3);
-            const hy = 13 * Math.cos(theta) - 5 * Math.cos(2*theta) - 2*Math.cos(3*theta) - Math.cos(4*theta);
-            const scale = 6.2 * DPR;
-            const xh = x + hx * scale;
-            const yh = y - hy * scale;
-            const angle = Math.atan2(yh - y, xh - x);
-            const p = new Particle(x, y, angle, rand(3.0, 4.2)*DPR, heartPalette[(Math.random()*heartPalette.length)|0], 0.010);
-            p.x = xh; p.y = yh; // 直接心形位置
-            p.vx *= 0.25; p.vy *= 0.25;
-            p.size = rand(1.4, 2.0);
-            this.particles.push(p);
-          }
-        }
-      }
-      step(ctx) {
-        this.trail.push(this.particles[0]?.x|0);
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-          const p = this.particles[i];
-          if (!p.step()) this.particles.splice(i, 1);
-          else p.draw(ctx);
-        }
-        return this.particles.length > 0;
-      }
-    }
-
-    const fireworks = [];
-    let lastLaunch = 0;
-
-    function launchFirework(cx, cy) {
-      fireworks.push(new Firework(cx, cy, rand(120, 200)));
-      // 辅助闪光
-      for (let i = 0; i < 24; i++) {
-        const angle = Math.random() * TAU;
-        const p = new Particle(cx, cy, angle, rand(2.2, 3.6)*DPR, 'rgba(255,255,255,0.9)', 0.02);
-        p.size = rand(1.8, 3.0);
-        fireworks.push({ particles: [p], step: fwStepOnce });
-      }
-    }
-    function fwStepOnce(ctx) {
-      const p = this.particles[0];
-      if (p && p.step()) p.draw(ctx);
-      return p && p.life > 0;
-    }
-
-    function animate(ts) {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'rgba(6, 8, 18, 0.24)';
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = fireworks.length - 1; i >= 0; i--) {
-        if (!fireworks[i].step(ctx)) fireworks.splice(i, 1);
-      }
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-
-    // 交互：点击或空格触发烟花
-    function toCanvasPos(clientX, clientY) {
-      const rect = canvas.getBoundingClientRect();
-      return [(clientX - rect.left) * DPR, (clientY - rect.top) * DPR];
-    }
-    window.addEventListener('pointerdown', (e) => {
-      const [x, y] = toCanvasPos(e.clientX, e.clientY);
-      launchFirework(x, y);
-    });
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        const x = rand(W*0.2, W*0.8);
-        const y = rand(H*0.2, H*0.55);
-        launchFirework(x, y);
-      }
-    });
-
-    // 按钮：连续烟花与心形展示
-    const launchBtn = document.getElementById('launch');
-    const heartBtn = document.getElementById('heartShow');
-    launchBtn.addEventListener('click', () => {
-      const seq = 8;
-      for (let i = 0; i < seq; i++) {
-        setTimeout(() => launchFirework(rand(W*0.18, W*0.82), rand(H*0.18, H*0.6)), i*260);
-      }
-    });
-    heartBtn.addEventListener('click', () => {
-      const cx = W/2, cy = H*0.42;
-      for (let i = 0; i < 3; i++) setTimeout(() => launchFirework(cx, cy), i*400);
-      // 打字机效果
-      typeLove(`邓悠然，我喜欢你。愿将温柔和热烈，统统给你。`);
-    });
-
-    // 打字机文字
-    const msg = document.getElementById('message');
-    function typeLove(text, speed=42) {
-      msg.textContent = '';
+    // ========== 打字机小作文 ==========
+    const essayText = [
+      "这一年，风有甜味，月亮有温度，连路灯都像在替我照亮你的名字。",
+      "我们把许多普通的日子，串成了柔软而漫长的项链。它不耀眼，却足够贴近心脏。",
+      "我不擅长说“永远”，但我擅长把每一个今天都过成想要的明天——然后把它们认真地交给你。",
+      "愿下一个春夏秋冬，仍有你。愿每次回头，都有光。"
+    ].join("\\n\\n");
+    const essayEl = document.getElementById('essay');
+    function typeWriter(text, speed=34){
+      essayEl.textContent = '';
       let i = 0;
-      const timer = setInterval(() => {
-        msg.textContent += text[i++];
-        if (i >= text.length) clearInterval(timer);
+      const timer = setInterval(()=>{
+        essayEl.textContent += text[i++];
+        if(i >= text.length) clearInterval(timer);
       }, speed);
     }
 
-    // 轻音乐（WebAudio 简谱合成）
-    const musicBtn = document.getElementById('musicToggle');
-    const audioEl = document.getElementById('bgm');
-    let audioCtx, playing = false;
-    const notes = [
-      // 简单温柔的旋律，单位秒（时值），A4=440Hz
-      { f: 440, d: .42 }, { f: 494, d: .28 }, { f: 523, d: .36 }, { f: 587, d: .54 },
-      { f: 659, d: .42 }, { f: 587, d: .34 }, { f: 523, d: .42 }, { f: 494, d: .36 },
-      { f: 523, d: .66 }, { f: 587, d: .46 }, { f: 659, d: .72 }, { f: 698, d: .44 },
-      { f: 659, d: .34 }, { f: 587, d: .44 }, { f: 523, d: .9 },
-    ];
-    async function playMelody() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const master = audioCtx.createGain();
-      master.gain.value = 0.06; // 轻音量
-      master.connect(audioCtx.destination);
-      let t = audioCtx.currentTime;
-      for (const { f, d } of notes) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = f;
-        const attack = 0.02, release = 0.12;
-        gain.gain.setValueAtTime(0, t);
-        gain.gain.linearRampToValueAtTime(0.9, t + attack);
-        gain.gain.linearRampToValueAtTime(0.0, t + d - release);
-        gain.gain.linearRampToValueAtTime(0.0, t + d);
-        osc.connect(gain); gain.connect(master);
-        osc.start(t);
-        osc.stop(t + d);
-        t += d + 0.05;
+    // ========== 漂浮心形 ==========
+    const heartsEl = document.getElementById('hearts');
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      const x = Math.random()*100, y = 100;
+      h.style.left = x + '%'; h.style.top = y + '%';
+      heartsEl.appendChild(h);
+      const vy = - (Math.random()*0.6 + 0.4);
+      const vx = (Math.random()-0.5)*0.3;
+      let life = 1.2;
+      function step(){
+        const rect = h.getBoundingClientRect();
+        const top = rect.top/window.innerHeight*100;
+        const left = rect.left/window.innerWidth*100;
+        h.style.top = (top + vy) + '%';
+        h.style.left = (left + vx) + '%';
+        life -= 0.012;
+        h.style.opacity = Math.max(life, 0);
+        if(life <= 0 || top < -10){ h.remove(); return; }
+        requestAnimationFrame(step);
       }
-      playing = true;
-      setTimeout(() => playing = false, (notes.reduce((s,n)=>s+n.d,0) + 0.8) * 1000);
+      requestAnimationFrame(step);
     }
-    musicBtn.addEventListener('click', async () => {
-      if (!playing) await playMelody();
-    });
+    setInterval(()=>{ if(document.hasFocus()) spawnHeart(); }, 800);
 
-    // 首次进入的小惊喜：自动播 3 轮烟花
-    window.addEventListener('load', () => {
-      const cx = W/2, cy = H*0.45;
-      for (let i = 0; i < 3; i++) setTimeout(() => launchFirework(cx + rand(-W*0.1, W*0.1), cy + rand(-H*0.05, H*0.05)), i*500);
-    });
-  </script>
-</body>
-</html>
+    // ========== 简易烟花 ==========
+    const fw = document.getElementById('fw');
+    const ctx = fw.getContext('2d', { alpha:true });
+    let W,H,DPR = Math.min(window.devicePixelRatio||1,2);
+    function resize(){
+      W = fw.width = Math.floor(window.innerWidth * DPR);
+      H = fw.height = Math.floor(Math.max(window.innerHeight*0.72, 400) * DPR);
+      fw.style.width = window.innerWidth + 'px';
+      fw.style.height = Math.max(window.innerHeight*0.72, 400) + 'px';
+    }
+    window.addEventListener('resize', resize, { passive:true });
+    resize();
+    const TAU = Math.PI*2; const rnd = (a,b)=>Math.random()*(b-a)+a;
+    class P{
+      constructor(x,y,a,s,c){ this.x=x; this.y=y; this.vx=Math.cos(a)*s; this.vy=Math.sin(a)*s; this.c=c;
