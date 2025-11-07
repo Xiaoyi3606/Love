@@ -1,258 +1,497 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>我们的一周年</title>
-  <meta name="description" content="一周年纪念：精美UI、烟花心形、时间轴、相册灯箱、倒计时与轻音乐" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0e1320;
-      --bg-soft:#121831;
-      --card:#151a2b;
-      --text:#eef2ff;
-      --text-soft:#c7d2fe;
-      --accent:#ff6bb3;
-      --accent-2:#7bdcff;
-      --gold:#ffd56b;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:radial-gradient(1200px circle at 70% 10%,#12172a 0%,#0e1320 40%,#080b16 100%);color:var(--text);font-family:Inter,"Noto Serif SC","PingFang SC","Microsoft YaHei",system-ui}
-    a{color:var(--accent)}
-    /* 顶部英雄封面 */
-    header.hero{
-      position:relative;min-height:72vh;display:grid;place-items:center;text-align:center;overflow:hidden
-    }
-    .hero::before{
-      content:"";position:absolute;inset:0;background:
-        radial-gradient(1200px circle at 80% 20%,rgba(255,105,180,.12),transparent 40%),
-        radial-gradient(1400px circle at 10% 90%,rgba(123,220,255,.10),transparent 45%);
-      z-index:0
-    }
-    .hero-inner{position:relative;z-index:2;padding:24px;max-width:980px;width:100%}
-    .title{
-      font-family:"Noto Serif SC",serif;font-size:clamp(28px,6vw,52px);letter-spacing:.6px;margin:8px 0 10px
-    }
-    .subtitle{
-      font-size:clamp(16px,3.2vw,20px);color:var(--text-soft);margin:0 0 18px
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
-      background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);font-weight:600;color:#ffe8f2
-    }
-    .cta{
-      display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px
-    }
-    .btn{
-      border:none;outline:none;padding:10px 16px;border-radius:12px;cursor:pointer;font-weight:600;letter-spacing:.2px
-    }
-    .btn-primary{
-      background:linear-gradient(90deg,var(--accent),#ff3e9e);color:white;box-shadow:0 16px 40px rgba(255,105,180,.3);transition:transform .15s ease
-    }
-    .btn-primary:hover{transform:translateY(-2px)}
-    .btn-ghost{
-      background:rgba(255,255,255,.10);color:#eaf2ff;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px)
-    }
-    /* 卡片与版式 */
-    .section{padding:42px 18px}
-    .container{width:min(1080px,92vw);margin:0 auto}
-    .card{
-      background:rgba(21,26,43,.8);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;
-      box-shadow:0 24px 80px rgba(0,0,0,.45),0 16px 40px rgba(255,105,180,.12)
-    }
-    .card h3{margin:0 0 12px;font-size:clamp(20px,3.6vw,26px)}
-    .card p{line-height:1.9;color:#e9efff}
-    /* 打字机与小作文 */
-    .typewriter{min-height:80px;white-space:pre-wrap}
-    .signature{margin-top:10px;color:#bcd0ff;font-size:14px}
-    /* 时间轴 */
-    .timeline{display:grid;gap:14px;margin-top:8px}
-    .t-item{
-      display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start;padding:14px;border-radius:14px;
-      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)
-    }
-    .t-date{font-weight:600;color:var(--gold)}
-    .t-text{color:#eaf2ff}
-    /* 相册网格 */
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .grid img{
-      width:100%;height:200px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.14);cursor:pointer;
-      transition:transform .18s ease, box-shadow .18s ease
-    }
-    .grid img:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(123,220,255,.25)}
-    /* 灯箱 */
-    .lightbox{position:fixed;inset:0;background:rgba(8,11,22,.8);display:none;align-items:center;justify-content:center;z-index:100}
-    .lightbox img{max-width:92vw;max-height:86vh;border-radius:16px;border:1px solid rgba(255,255,255,.2)}
-    /* 漂浮心形 */
-    .hearts{position:fixed;inset:0;pointer-events:none;z-index:1}
-    .heart{
-      position:absolute;width:18px;height:18px;transform:translate(-50%,-50%);opacity:.9;filter:drop-shadow(0 6px 16px rgba(255,105,180,.4))
-    }
-    .heart::before,.heart::after{
-      content:"";position:absolute;width:9px;height:14px;background:linear-gradient(180deg,#ff7ab5 0%,#ff3e9e 50%,#ff0066 100%);
-      border-radius:9px 9px 0 0;transform:rotate(-45deg);transform-origin:0 100%;left:4px;top:2px
-    }
-    .heart::after{transform:rotate(45deg);transform-origin:100% 100%;left:auto;right:4px}
-    /* 倒计时卡 */
-    .countdown{display:flex;gap:14px;flex-wrap:wrap}
-    .count-item{
-      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:12px 14px;min-width:120px;text-align:center
-    }
-    .count-item .num{font-size:26px;font-weight:700;color:#fff}
-    .count-item .label{font-size:12px;color:#c7d6ff}
-    /* 底部 */
-    footer{padding:22px 18px;text-align:center;color:#89a4ff;font-size:12px}
-    /* 响应式 */
-    @media (max-width:768px){
-      .grid{grid-template-columns:1fr 1fr}
-      .t-item{grid-template-columns:100px 1fr}
-    }
-    @media (max-width:460px){
-      .grid{grid-template-columns:1fr}
-      .t-item{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>可爱3D跑酷 | Bunny Run</title>
+<style>
+  :root{
+    --bg:#0e1320;
+    --panel:#151a2b;
+    --accent:#ff6bb3;
+    --accent2:#7bdcff;
+    --gold:#ffd56b;
+    --text:#eef2ff;
+    --soft:#c7d2fe;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#0e1320 0%,#101833 60%,#0a0f22 100%);overflow:hidden}
+  #ui{
+    position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;z-index:10;
+    font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui;color:var(--text)
+  }
+  .topbar{
+    margin:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;pointer-events:auto
+  }
+  .card{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);
+    border-radius:14px;padding:10px 14px;display:flex;gap:8px;align-items:center
+  }
+  .pill{border-radius:999px;padding:8px 14px;background:linear-gradient(90deg,var(--accent),#ff3e9e);color:#fff;font-weight:700;box-shadow:0 10px 24px rgba(255,105,180,.3)}
+  .btn{
+    pointer-events:auto;border:none;outline:none;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;color:#fff;
+    background:linear-gradient(90deg,var(--accent2),#5bc5ff);box-shadow:0 10px 20px rgba(123,220,255,.25);transition:transform .15s ease
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .leftPanel,.rightPanel{display:flex;flex-direction:column;gap:10px}
+  .mid{display:flex;justify-content:center;pointer-events:none}
+  .hint{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);
+    border-radius:14px;padding:8px 12px;color:var(--soft);font-size:13px
+  }
+  #overlay{
+    position:fixed;inset:0;display:grid;place-items:center;z-index:11;background:rgba(10,15,34,.5);
+    opacity:0;pointer-events:none;transition:.25s ease
+  }
+  #overlay.show{opacity:1;pointer-events:auto}
+  .modal{
+    width:min(520px,92vw);background:rgba(21,26,43,.92);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px;
+    text-align:center;color:var(--text);box-shadow:0 24px 80px rgba(0,0,0,.45)
+  }
+  .title{font-size:22px;margin:6px 0 8px}
+  .desc{color:#cfe0ff;font-size:14px;line-height:1.8}
+  canvas{display:block}
+</style>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="pill">我们的一周年 · One Year Anniversary</div>
-      <h1 class="title">和你一起，温柔的一整年</h1>
-      <p class="subtitle">把喜欢写进每一个普通的日子里，等它们在回望时都闪闪发光。</p>
-      <div class="cta">
-        <button class="btn btn-primary" id="playFireworks">点亮此刻</button>
-        <button class="btn btn-ghost" id="toggleMusic">轻音乐</button>
-        <button class="btn btn-ghost" id="scrollEssay">看看小作文</button>
-      </div>
-    </div>
-    <canvas id="fw"></canvas>
-  </header>
+<div id="ui">
+  <div class="topbar">
+    <div class="pill">Bunny Run · 可爱3D跑酷</div>
+    <div class="card"><strong>分数</strong><span id="score">0</span></div>
+    <div class="card"><strong>连击</strong><span id="combo">x1</span></div>
+    <div class="card"><strong>速度</strong><span id="speed">1.0</span></div>
+    <button class="btn" id="btnStart">开始</button>
+    <button class="btn" id="btnPause">暂停</button>
+  </div>
+  <div class="mid">
+    <div class="hint">操作：A/← 左 | D/→ 右 | 空格 跳 | S/↓ 下蹲 | 触屏左右滑动切道，上滑跳，下滑蹲</div>
+  </div>
+  <div class="rightPanel" style="position:fixed;right:10px;top:10px">
+    <div class="card">收集 <span style="color:var(--gold);font-weight:700;margin-left:6px">★ 星星</span> 与 <span style="color:var(--accent);font-weight:700;margin-left:6px">♥ 爱心</span></div>
+  </div>
+</div>
 
-  <main>
-    <section class="section">
-      <div class="container card">
-        <h3>一周年小作文</h3>
-        <div class="typewriter" id="essay"></div>
-        <p class="signature">—— 写给那位让我把生活过成诗的人</p>
-      </div>
-    </section>
+<div id="overlay" class="show">
+  <div class="modal">
+    <h2 class="title">准备好一起奔跑了吗？</h2>
+    <p class="desc">
+      这是一个软萌卡通的三车道跑酷：躲避果冻障碍、跳过积木桥、收集星星与爱心。<br/>
+      跑得越久越快，连击越高分越多。试着保持节奏，别让兔兔撞到哦！
+    </p>
+    <button class="btn" id="btnReady">开始游戏</button>
+  </div>
+</div>
 
-    <section class="section">
-      <div class="container card">
-        <h3>我们的时间轴</h3>
-        <div class="timeline">
-          <div class="t-item">
-            <div class="t-date">2024-11-08</div>
-            <div class="t-text">第一次把“喜欢”说出口。后来每一次目光相遇，都像按下了心动的重播键。</div>
-          </div>
-          <div class="t-item">
-            <div class="t-date">2025-01-14</div>
-            <div class="t-text">去看了冬日的落日。风很冷，你的手很暖，连影子也被染成了金色。</div>
-          </div>
-          <div class="t-item">
-            <div class="t-date">2025-04-02</div>
-            <div class="t-text">雨后走在花下，路灯像星，花像雨。那晚我决定，把全部温柔都给你。</div>
-          </div>
-          <div class="t-item">
-            <div class="t-date">2025-08-08</div>
-            <div class="t-text">我们为一个小小的愿望庆祝。愿望实现的时候，我偷偷许了另一个：永远。</div>
-          </div>
-        </div>
-      </div>
-    </section>
+<script type="module">
+/* 依赖 Three.js（CDN） */
+import * as THREE from "https://unpkg.com/three@0.161.0/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.161.0/examples/jsm/controls/OrbitControls.js";
 
-    <section class="section">
-      <div class="container card">
-        <h3>一周年倒计时</h3>
-        <p style="color:#cfe0ff;margin:6px 0 12px">设置我们的纪念日后，倒计时会自动刷新。</p>
-        <div class="countdown" id="countdown"></div>
-      </div>
-    </section>
+/* 基础场景 */
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
 
-    <section class="section">
-      <div class="container card">
-        <h3>小相册</h3>
-        <p style="color:#cfe0ff;margin:6px 0 12px">点击图片可全屏预览，支持手机手势缩放。</p>
-        <div class="grid" id="gallery">
-          <!-- 将以下 src 替换为你的图片地址或相对路径 -->
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="星空" />
-          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="夜色" />
-          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop" alt="霓虹" />
-          <img src="https://images.unsplash.com/photo-1513558161293-c97ee98c78ee?q=80&w=1200&auto=format&fit=crop" alt="海边" />
-          <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1200&auto=format&fit=crop" alt="花园" />
-          <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?q=80&w=1200&auto=format&fit=crop" alt="城市" />
-        </div>
-      </div>
-    </section>
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0e1320, 0.02);
 
-    <div class="lightbox" id="lightbox"><img id="lightImg" src="" alt="preview" /></div>
+const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 2000);
+camera.position.set(0, 3.6, 8);
 
-  </main>
+/* controls（开发调试可用，游戏默认禁用鼠标旋转） */
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enablePan = false; controls.enableZoom = false; controls.enableRotate = false;
 
-  <footer>如果你愿意，我们就把第二年也过得闪闪发光。</footer>
+/* 灯光与卡通材质 */
+const hemi = new THREE.HemisphereLight(0xfff0f7, 0x101833, 0.9);
+scene.add(hemi);
+const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+dir.position.set(5,10,2);
+scene.add(dir);
 
-  <audio id="bgm" preload="auto"></audio>
+/* 卡通材质函数 */
+function toonMaterial(color){
+  const mat = new THREE.MeshToonMaterial({ color, gradientMap: null });
+  mat.color.convertSRGBToLinear();
+  mat.emissive.set(0x000000);
+  return mat;
+}
 
-  <div class="hearts" id="hearts"></div>
+/* 可爱配色 */
+const colors = {
+  lane: 0x1b2240,
+  laneEdge: 0x2a3056,
+  accent: 0xff6bb3,
+  accent2: 0x7bdcff,
+  gold: 0xffd56b,
+  jelly: 0x9ce0ff,
+  grass: 0x86e3c4,
+  skyTop: new THREE.Color("#7bdcff"),
+  skyBottom: new THREE.Color("#101833")
+};
 
-  <script>
-    // ========== 打字机小作文 ==========
-    const essayText = [
-      "这一年，风有甜味，月亮有温度，连路灯都像在替我照亮你的名字。",
-      "我们把许多普通的日子，串成了柔软而漫长的项链。它不耀眼，却足够贴近心脏。",
-      "我不擅长说“永远”，但我擅长把每一个今天都过成想要的明天——然后把它们认真地交给你。",
-      "愿下一个春夏秋冬，仍有你。愿每次回头，都有光。"
-    ].join("\\n\\n");
-    const essayEl = document.getElementById('essay');
-    function typeWriter(text, speed=34){
-      essayEl.textContent = '';
-      let i = 0;
-      const timer = setInterval(()=>{
-        essayEl.textContent += text[i++];
-        if(i >= text.length) clearInterval(timer);
-      }, speed);
+/* 渐变天空（圆顶） */
+const skyGeo = new THREE.SphereGeometry(160, 64, 64);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide,
+  uniforms: {
+    topColor: { value: colors.skyTop },
+    bottomColor: { value: colors.skyBottom },
+    mixFactor: { value: 0.6 }
+  },
+  vertexShader: `
+    varying vec3 vPos;
+    void main(){
+      vPos = position;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
     }
-
-    // ========== 漂浮心形 ==========
-    const heartsEl = document.getElementById('hearts');
-    function spawnHeart(){
-      const h = document.createElement('div');
-      h.className = 'heart';
-      const x = Math.random()*100, y = 100;
-      h.style.left = x + '%'; h.style.top = y + '%';
-      heartsEl.appendChild(h);
-      const vy = - (Math.random()*0.6 + 0.4);
-      const vx = (Math.random()-0.5)*0.3;
-      let life = 1.2;
-      function step(){
-        const rect = h.getBoundingClientRect();
-        const top = rect.top/window.innerHeight*100;
-        const left = rect.left/window.innerWidth*100;
-        h.style.top = (top + vy) + '%';
-        h.style.left = (left + vx) + '%';
-        life -= 0.012;
-        h.style.opacity = Math.max(life, 0);
-        if(life <= 0 || top < -10){ h.remove(); return; }
-        requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+  `,
+  fragmentShader: `
+    varying vec3 vPos;
+    uniform vec3 topColor;
+    uniform vec3 bottomColor;
+    uniform float mixFactor;
+    void main(){
+      float h = normalize(vPos).y * 0.5 + 0.5;
+      vec3 col = mix(bottomColor, topColor, pow(h, mixFactor));
+      gl_FragColor = vec4(col, 1.0);
     }
-    setInterval(()=>{ if(document.hasFocus()) spawnHeart(); }, 800);
+  `
+});
+scene.add(new THREE.Mesh(skyGeo, skyMat));
 
-    // ========== 简易烟花 ==========
-    const fw = document.getElementById('fw');
-    const ctx = fw.getContext('2d', { alpha:true });
-    let W,H,DPR = Math.min(window.devicePixelRatio||1,2);
-    function resize(){
-      W = fw.width = Math.floor(window.innerWidth * DPR);
-      H = fw.height = Math.floor(Math.max(window.innerHeight*0.72, 400) * DPR);
-      fw.style.width = window.innerWidth + 'px';
-      fw.style.height = Math.max(window.innerHeight*0.72, 400) + 'px';
+/* 地面与车道 */
+const laneGroup = new THREE.Group();
+scene.add(laneGroup);
+const laneCount = 3, laneSpacing = 2.4;
+for(let i=0;i<laneCount;i++){
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.4,400), toonMaterial(colors.lane));
+  base.position.set((i-1)*laneSpacing, -0.4, -120);
+  laneGroup.add(base);
+
+  // 侧边柔光
+  const edge = new THREE.Mesh(new THREE.BoxGeometry(1.8,0.42,400), toonMaterial(0x202646));
+  edge.position.set((i-1)*laneSpacing, -0.41, -120);
+  laneGroup.add(edge);
+}
+
+/* 装饰地景：泡泡树与软云块 */
+const decoGroup = new THREE.Group();
+scene.add(decoGroup);
+function makeBubbleTree(x,z){
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.2,1.2,16), toonMaterial(0x8b6b4c));
+  trunk.position.set(x,0.2,z);
+  const crown = new THREE.Mesh(new THREE.SphereGeometry(0.6,24,24), toonMaterial(0x9ee6c9));
+  crown.position.set(0,0.9,0);
+  const g = new THREE.Group();
+  g.add(trunk); trunk.add(crown);
+  decoGroup.add(g);
+}
+function makeCloud(x,y,z){
+  const g = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.SphereGeometry(0.8,16,16), toonMaterial(0xeaf2ff));
+  g.add(base);
+  for(let i=0;i<3;i++){
+    const puff = new THREE.Mesh(new THREE.SphereGeometry(0.5,16,16), toonMaterial(0xf5f9ff));
+    puff.position.set(Math.random()*1.2-0.6, Math.random()*0.5, Math.random()*0.6-0.3);
+    g.add(puff);
+  }
+  g.position.set(x,y,z);
+  decoGroup.add(g);
+}
+for(let i=0;i<18;i++) makeBubbleTree((Math.random()<.5?-1:1)*(3.8+Math.random()*1.6), -30 - i*20);
+for(let i=0;i<10;i++) makeCloud((Math.random()<.5?-1:1)*(4+Math.random()*3), 2.8+Math.random()*2, -60 - i*40);
+
+/* 角色：Q版兔子 */
+const bunny = new THREE.Group();
+{
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.5,24,24), toonMaterial(0xffe9f3));
+  const belly = new THREE.Mesh(new THREE.SphereGeometry(0.4,24,24), toonMaterial(0xfff6fb));
+  belly.position.set(0,-0.1,0.2);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.42,24,24), toonMaterial(0xfff6fb));
+  head.position.set(0,0.55,0);
+  const earL = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.6,12), toonMaterial(0xffc6e1));
+  earL.position.set(-0.16,1.0,0.06);
+  const earR = earL.clone(); earR.position.x = 0.16;
+  const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.06,16,16), toonMaterial(0x2a3056));
+  eyeL.position.set(-0.12,0.62,0.32);
+  const eyeR = eyeL.clone(); eyeR.position.x = 0.12;
+  const footL = new THREE.Mesh(new THREE.SphereGeometry(0.12,16,16), toonMaterial(0xffc6e1));
+  footL.position.set(-0.16,-0.38,0.16);
+  const footR = footL.clone(); footR.position.x = 0.16;
+
+  bunny.add(body); bunny.add(belly); bunny.add(head);
+  bunny.add(earL); bunny.add(earR);
+  bunny.add(eyeL); bunny.add(eyeR);
+  bunny.add(footL); bunny.add(footR);
+  bunny.position.set(0,0,2);
+  scene.add(bunny);
+}
+
+/* 粒子心光（收集特效） */
+const sparkleGeo = new THREE.SphereGeometry(0.04, 8, 8);
+const sparkleMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+function spawnSparkles(x,y,z,count=20){
+  const group = new THREE.Group();
+  for(let i=0;i<count;i++){
+    const p = new THREE.Mesh(sparkleGeo, sparkleMat.clone());
+    p.position.set(x,y,z);
+    group.add(p);
+  }
+  scene.add(group);
+  let life=1;
+  function step(){
+    life -= 0.02;
+    group.children.forEach((m,i)=>{
+      m.material.color.setHSL(0.9, 0.8, 0.6 + Math.sin(i*0.3 + life*6)*0.2);
+      m.position.x += (Math.random()-0.5)*0.08;
+      m.position.y += (Math.random())*0.06;
+      m.position.z += (Math.random()-0.5)*0.08;
+    });
+    if(life<=0){ scene.remove(group); return; }
+    requestAnimationFrame(step);
+  }
+  step();
+}
+
+/* 障碍与收集物 */
+const obstacleGroup = new THREE.Group();
+const collectGroup = new THREE.Group();
+scene.add(obstacleGroup, collectGroup);
+
+function makeJellyBlock(lane,z){
+  const geo = new THREE.BoxGeometry(1.2,0.8,1.2,8,8,8);
+  const mat = new THREE.MeshToonMaterial({ color: colors.jelly });
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set((lane-1)*laneSpacing, 0, z);
+  m.userData.type = "obstacle";
+  obstacleGroup.add(m);
+}
+function makeBridge(lane,z){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.2,2.6), toonMaterial(0x89a4ff));
+  m.position.set((lane-1)*laneSpacing, 0.3, z);
+  m.userData.type = "obstacle";
+  obstacleGroup.add(m);
+}
+function makeStar(lane,z){
+  const geo = new THREE.OctahedronGeometry(0.25,0);
+  const mat = new THREE.MeshToonMaterial({ color: colors.gold });
+  const m = new THREE.Mesh(geo, mat);
+  m.position.set((lane-1)*laneSpacing, 0.6, z);
+  m.userData.type = "star";
+  collectGroup.add(m);
+}
+function makeHeart(lane,z){
+  // 心形由两个球和一个圆锥拼接
+  const g = new THREE.Group();
+  const c = toonMaterial(colors.accent);
+  const a = new THREE.Mesh(new THREE.SphereGeometry(0.18,16,16), c); a.position.set(-0.12,0.1,0);
+  const b = a.clone(); b.position.x = 0.12;
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(0.24,0.36,16), c); cone.rotation.x = Math.PI; cone.position.y = -0.06;
+  g.add(a); g.add(b); g.add(cone);
+  g.position.set((lane-1)*laneSpacing, 0.5, 0);
+  g.userData.type = "heart";
+  collectGroup.add(g);
+  g.position.z = z;
+}
+
+/* 生成赛道内容 */
+function generateChunk(zStart, length=60){
+  for(let z=zStart; z>zStart-length; z-=6){
+    const lane = (Math.random()*3|0)+1;
+    const r = Math.random();
+    if(r < 0.35) makeJellyBlock(lane, z);
+    else if(r < 0.55) makeBridge(lane, z);
+    else if(r < 0.80) makeStar(lane, z);
+    else makeHeart(lane, z);
+  }
+}
+generateChunk(-10, 120);
+generateChunk(-130, 120);
+
+/* 游戏状态 */
+let running = false;
+let speed = 0.12;      // 基础前进速度
+let laneIndex = 2;     // 初始中间车道（1/2/3）
+let vy = 0;            // 跳跃速度
+let crouch = false;    // 下蹲状态
+let score = 0;
+let combo = 1;
+let time = 0;
+
+/* UI 更新 */
+const elScore = document.getElementById('score');
+const elCombo = document.getElementById('combo');
+const elSpeed = document.getElementById('speed');
+function updateUI(){
+  elScore.textContent = score|0;
+  elCombo.textContent = "x"+combo;
+  elSpeed.textContent = (speed/0.12).toFixed(1);
+}
+
+/* 操作与输入 */
+function setLane(target){
+  laneIndex = Math.max(1, Math.min(3, target));
+}
+function jump(){
+  if(bunny.position.y < 0.05){ vy = 0.22; }
+}
+function setCrouch(on){
+  crouch = on;
+}
+
+/* 键盘 */
+window.addEventListener('keydown', e=>{
+  if(e.code==="ArrowLeft"||e.code==="KeyA") setLane(laneIndex-1);
+  if(e.code==="ArrowRight"||e.code==="KeyD") setLane(laneIndex+1);
+  if(e.code==="Space"||e.code==="ArrowUp"||e.code==="KeyW") jump();
+  if(e.code==="ArrowDown"||e.code==="KeyS") setCrouch(true);
+});
+window.addEventListener('keyup', e=>{
+  if(e.code==="ArrowDown"||e.code==="KeyS") setCrouch(false);
+});
+
+/* 触屏滑动 */
+let touchStart=null;
+window.addEventListener('touchstart', e=>{
+  const t = e.changedTouches[0]; touchStart = {x:t.clientX, y:t.clientY, t:performance.now()};
+}, {passive:true});
+window.addEventListener('touchend', e=>{
+  const t = e.changedTouches[0]; if(!touchStart) return;
+  const dx = t.clientX - touchStart.x; const dy = t.clientY - touchStart.y;
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(dx>30) setLane(laneIndex+1); else if(dx<-30) setLane(laneIndex-1);
+  }else{
+    if(dy<-30) jump(); else if(dy>30){ setCrouch(true); setTimeout(()=>setCrouch(false), 300); }
+  }
+  touchStart=null;
+}, {passive:true});
+
+/* 相机跟随与角色动画 */
+function updateBunny(dt){
+  // 水平切道平滑
+  const targetX = (laneIndex-1)*laneSpacing;
+  bunny.position.x += (targetX - bunny.position.x)*Math.min(1, dt*8);
+
+  // 跳跃与重力
+  vy -= 0.009;
+  bunny.position.y = Math.max(0, bunny.position.y + vy);
+  if(bunny.position.y<=0){ bunny.position.y=0; vy=0; }
+
+  // 下蹲表现
+  const scaleY = crouch ? 0.8 : 1.0;
+  bunny.scale.set(1, scaleY, 1);
+
+  // 轻微摆动
+  bunny.rotation.z = Math.sin(time*2)*0.05;
+  bunny.rotation.y = (targetX - bunny.position.x)*0.06;
+}
+
+/* 前进与内容循环 */
+function advanceWorld(dt){
+  const dz = speed * (dt*60);
+  obstacleGroup.children.forEach(m=> m.position.z += dz);
+  collectGroup.children.forEach(m=> { m.position.z += dz; if(m.userData.type==="star") m.rotation.y += 0.02; });
+  decoGroup.children.forEach(m=> m.position.z += dz*0.5);
+
+  // 回收与补充
+  for(let i=obstacleGroup.children.length-1;i>=0;i--){
+    if(obstacleGroup.children[i].position.z > 10){
+      obstacleGroup.remove(obstacleGroup.children[i]);
     }
-    window.addEventListener('resize', resize, { passive:true });
-    resize();
-    const TAU = Math.PI*2; const rnd = (a,b)=>Math.random()*(b-a)+a;
-    class P{
-      constructor(x,y,a,s,c){ this.x=x; this.y=y; this.vx=Math.cos(a)*s; this.vy=Math.sin(a)*s; this.c=c;
+  }
+  for(let i=collectGroup.children.length-1;i>=0;i--){
+    if(collectGroup.children[i].position.z > 10){
+      collectGroup.remove(collectGroup.children[i]);
+    }
+  }
+  // 定时生成新的片段
+  if(time % 2 < 0.016) generateChunk(-160, 60);
+}
+
+/* 简易碰撞检测 */
+const tmpVec = new THREE.Vector3();
+function checkCollisions(){
+  // 障碍
+  for(const m of obstacleGroup.children){
+    tmpVec.copy(m.position);
+    const dx = Math.abs(tmpVec.x - bunny.position.x);
+    const dz = Math.abs(tmpVec.z - bunny.position.z);
+    const dy = Math.abs(m.position.y - bunny.position.y);
+    const hitY = crouch ? bunny.position.y < 0.2 : true;
+    if(dx < 0.7 && dz < 0.8 && hitY){
+      // 撞击反馈
+      combo = 1;
+      speed = Math.max(0.10, speed*0.85);
+      score = Math.max(0, score - 20);
+      spawnSparkles(bunny.position.x, bunny.position.y+0.3, bunny.position.z, 10);
+      // 小弹开
+      vy = 0.12;
+    }
+  }
+  // 收集
+  for(let i=collectGroup.children.length-1;i>=0;i--){
+    const m = collectGroup.children[i];
+    const dx = Math.abs(m.position.x - bunny.position.x);
+    const dz = Math.abs(m.position.z - bunny.position.z);
+    const dy = Math.abs(m.position.y - bunny.position.y);
+    if(dx < 0.7 && dz < 0.7 && dy < 0.6){
+      collectGroup.remove(m);
+      const bonus = m.userData.type==="star" ? 10 : 20;
+      score += bonus * combo;
+      combo = Math.min(10, combo + 1);
+      spawnSparkles(m.position.x, m.position.y, m.position.z, 24);
+      // 微增速
+      speed = Math.min(0.28, speed + 0.005);
+    }
+  }
+}
+
+/* 游戏循环 */
+let last = performance.now();
+function loop(now){
+  const dt = Math.min(0.033, (now - last)/1000);
+  last = now; time += dt;
+  if(running){
+    updateBunny(dt);
+    advanceWorld(dt);
+    checkCollisions();
+    // 难度递增：缓慢提速、随时间加成
+    speed = Math.min(0.3, speed + dt*0.0008);
+    score += dt*2 * combo;
+    updateUI();
+    camera.position.lerp(new THREE.Vector3(bunny.position.x, bunny.position.y+3.6, bunny.position.z+6.8), 0.08);
+    camera.lookAt(bunny.position.x, bunny.position.y+0.8, bunny.position.z-2);
+  }
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* 按钮与状态 */
+const overlay = document.getElementById('overlay');
+document.getElementById('btnReady').addEventListener('click', ()=>{
+  overlay.classList.remove('show');
+  running = true;
+});
+document.getElementById('btnStart').addEventListener('click', ()=>{
+  running = true;
+});
+document.getElementById('btnPause').addEventListener('click', ()=>{
+  running = false;
+});
+
+/* 窗口适配 */
+window.addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* 初始 UI */
+updateUI();
+
+</script>
+</body>
+</html>
